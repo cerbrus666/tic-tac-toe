@@ -12,6 +12,9 @@ pygame.display.set_caption("TicTacToe")
 # Define variables
 line_width = 6
 markers = []
+clicked = False
+pos = []
+player = 1
 
 
 def draw_grid():
@@ -40,6 +43,16 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+            clicked = True
+        if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+            clicked = False
+            pos = pygame.mouse.get_pos()
+            cell_x = pos[0]
+            cell_y = pos[1]
+            if markers[cell_x // 100][cell_y // 100] == 0:
+                markers[cell_x // 100][cell_y // 100] = player
+                player *= -1
 
     pygame.display.update()
 pygame.quit()
@@ -48,6 +61,7 @@ pygame.quit()
 # Part 1
 # Import modules
 # Create grid and setup the grid list
+
 
 # Part 2
 # Create event handler for clicking on a cell
