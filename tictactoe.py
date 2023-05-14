@@ -34,8 +34,6 @@ for x in range(3):
     row = [0] * 3
     markers.append(row)
 
-print(markers)
-
 run = True
 while run:
     draw_grid()
