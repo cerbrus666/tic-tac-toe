@@ -16,6 +16,10 @@ clicked = False
 pos = []
 player = 1
 
+# Define colors
+green = (0, 255, 0)
+red = (255, 0, 0)
+
 
 def draw_grid():
     bg = (255, 255, 200)
@@ -34,9 +38,45 @@ for x in range(3):
     row = [0] * 3
     markers.append(row)
 
+
+def draw_markers():
+    x_pos = 0
+    for x in markers:
+        y_pos = 0
+        for y in x:
+            if y == 1:
+                pygame.draw.line(
+                    screen,
+                    green,
+                    (x_pos * 100 + 15, y_pos * 100 + 15),
+                    (
+                        x_pos * 100 + 85,
+                        y_pos * 100 + 85,
+                    ),
+                    line_width,
+                )
+                pygame.draw.line(
+                    screen,
+                    green,
+                    (x_pos * 100 + 15, y_pos * 100 + 85),
+                    (
+                        x_pos * 100 + 85,
+                        y_pos * 100 + 15,
+                    ),
+                    line_width,
+                )
+            if y == -1:
+                pygame.draw.circle(
+                    screen, red, (x_pos * 100 + 50, y_pos * 100 + 50), 38, line_width
+                )
+            y_pos += 1
+        x_pos += 1
+
+
 run = True
 while run:
     draw_grid()
+    draw_markers()
     # Add event handlers
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
