@@ -11,10 +11,12 @@ pygame.display.set_caption("TicTacToe")
 
 # Define variables
 line_width = 6
-markers = []
+MARKERS = []
 clicked = False
 pos = []
 player = 1
+WINNER = 0
+GAME_OVER = False
 
 # Define colors
 green = (0, 255, 0)
@@ -36,12 +38,12 @@ def draw_grid():
 
 for x in range(3):
     row = [0] * 3
-    markers.append(row)
+    MARKERS.append(row)
 
 
 def draw_markers():
     x_pos = 0
-    for x in markers:
+    for x in MARKERS:
         y_pos = 0
         for y in x:
             if y == 1:
@@ -73,6 +75,34 @@ def draw_markers():
         x_pos += 1
 
 
+def check_winner():
+    y_pos = 0
+    for x in MARKERS:
+        # Check columns
+        if sum(x) == 3:
+            WINNER = 1
+            GAME_OVER = True
+        if sum(x) == -3:
+            WINNER = 1
+            GAME_OVER = True
+        # Check rows
+        if MARKERS[0][y_pos] + MARKERS[1][y_pos] + MARKERS[2][y_pos] == 3:
+            WINNER = 1
+            GAME_OVER = True
+        if MARKERS[0][y_pos] + MARKERS[1][y_pos] + MARKERS[2][y_pos] == -3:
+            WINNER = 2
+            GAME_OVER = True
+        y_pos += 1
+
+        # Check cross
+        if (
+            MARKERS[0][0] + MARKERS[1][1] + MARKERS[2][2] == 3
+            or MARKERS[2][0] + MARKERS[1][1] + MARKERS[0][2] == 3
+        ):
+            WINNER = 1
+            GAME_OVER = True
+
+
 run = True
 while run:
     draw_grid()
@@ -88,9 +118,10 @@ while run:
             pos = pygame.mouse.get_pos()
             cell_x = pos[0]
             cell_y = pos[1]
-            if markers[cell_x // 100][cell_y // 100] == 0:
-                markers[cell_x // 100][cell_y // 100] = player
+            if MARKERS[cell_x // 100][cell_y // 100] == 0:
+                MARKERS[cell_x // 100][cell_y // 100] = player
                 player *= -1
+                check_winner()
 
     pygame.display.update()
 pygame.quit()
