@@ -26,6 +26,9 @@ BLUE = (0, 0, 255)
 # Define fonts
 font = pygame.font.SysFont(None, 40)
 
+# Create play again rectangle
+again_rect = Rect(screen_width // 2 - 80, screen_height // 2 + 10, 160, 50)
+
 
 def draw_grid():
     bg = (255, 255, 200)
@@ -125,6 +128,11 @@ def draw_winner(winner):
     )
     screen.blit(win_img, (screen_width // 2 - 100, screen_height // 2 - 50))
 
+    again_text = "Play again?"
+    again_img = font.render(again_text, True, BLUE)
+    pygame.draw.rect(screen, green, again_rect)
+    screen.blit(again_img, (screen_width // 2 - 80, screen_height // 2 + 10))
+
 
 run = True
 game = False
@@ -136,20 +144,38 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if game == False:
+            if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+                clicked = True
+            if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+                clicked = False
+                pos = pygame.mouse.get_pos()
+                cell_x = pos[0]
+                cell_y = pos[1]
+                if MARKERS[cell_x // 100][cell_y // 100] == 0:
+                    MARKERS[cell_x // 100][cell_y // 100] = player
+                    player *= -1
+                    game, win = check_winner()
+
+    if game is True:
+        draw_winner(win)
+        # Check if mouseclick to see if user has clicked Play again
         if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
             clicked = True
         if event.type == pygame.MOUSEBUTTONUP and clicked == True:
             clicked = False
             pos = pygame.mouse.get_pos()
-            cell_x = pos[0]
-            cell_y = pos[1]
-            if MARKERS[cell_x // 100][cell_y // 100] == 0:
-                MARKERS[cell_x // 100][cell_y // 100] = player
-                player *= -1
-                game, win = check_winner()
+            if again_rect.collidepoint(pos):
+                # reset variables
+                MARKERS = []
+                pos = []
+                player = 1
+                WINNER = 0
+                game = False
 
-    if game is True:
-        draw_winner(win)
+                for x in range(3):
+                    row = [0] * 3
+                    MARKERS.append(row)
 
     pygame.display.update()
 pygame.quit()
