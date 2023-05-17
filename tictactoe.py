@@ -88,20 +88,16 @@ def check_winner():
         if sum(x) == 3:
             WINNER = 1
             GAME_OVER = True
-            print("WON?")
         if sum(x) == -3:
             WINNER = 1
             GAME_OVER = True
-            print("WON?")
         # Check columns
         if MARKERS[0][y_pos] + MARKERS[1][y_pos] + MARKERS[2][y_pos] == 3:
             WINNER = 1
             GAME_OVER = True
-            print("WON?")
         if MARKERS[0][y_pos] + MARKERS[1][y_pos] + MARKERS[2][y_pos] == -3:
             WINNER = 2
             GAME_OVER = True
-            print("WON?")
         y_pos += 1
 
         # Check cross
@@ -123,7 +119,6 @@ def check_winner():
 
 def draw_winner(winner):
     win_text = "Player " + str(winner) + " wins!"
-    print(win_text)
     win_img = font.render(win_text, True, BLUE)
     pygame.draw.rect(
         screen, green, (screen_width // 2 - 100, screen_height // 2 - 60, 200, 50)
